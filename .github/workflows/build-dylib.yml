@@ -1,0 +1,29 @@
+name: Build iOS dylib
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Make build script executable
+        run: chmod +x build.sh
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Show result
+        run: |
+          file build/libIPRedirector.dylib
+          ls -lh build/libIPRedirector.dylib
+
+      - name: Upload dylib
+        uses: actions/upload-artifact@v4
+        with:
+          name: libIPRedirector
+          path: build/libIPRedirector.dylib
